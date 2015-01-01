@@ -5,31 +5,41 @@
  */
 package com.github.kajdreef.mazerunnermvn.State;
 
+import com.github.kajdreef.mazerunnermvn.Object.Cube;
+import com.github.kajdreef.mazerunnermvn.Object.GameObject;
+import java.util.ArrayList;
+
 /**
  *
  * @author kajdreef
  */
 public class MazeRunner extends State {
+    ArrayList<GameObject> obj = null;
 
-
+    public MazeRunner(){
+        init();
+    }
+    
     @Override
     public void init() {
-
+        obj = new ArrayList<>();
+        obj.add(new Cube(0,0,0));
     }
     
     @Override
     public void input() {
-        System.out.println("MazeRunner Input");
 
     }
 
     @Override
     public void logic(int delta) {
-        System.out.println("MazeRunner Logic");
+
     }
 
     @Override
     public void render() {
-        System.out.println("MazeRunner Render");
+        for(GameObject gameObj: obj){
+            gameObj.render();
+        }
     }
 }
