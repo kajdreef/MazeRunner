@@ -89,7 +89,8 @@ public class Launcher {
         );
         
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        
+        GL11.glLoadIdentity();
+
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
     }
     
@@ -123,11 +124,6 @@ public class Launcher {
             // Clear the screen and depth buffer
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
             GL11.glLoadIdentity();
-
-            GL11.glTranslatef((float)Math.sin(RotateYaw/180*Math.PI), 0f, -4f);
-            GL11.glRotatef(45f, 0.4f, 1.0f, 0.1f);
-            GL11.glRotatef(RotateYaw, 1f, 1.0f, 1f);
-            RotateYaw+=2;
             
             state.input();
             state.logic(timer0.getDelta());
@@ -145,9 +141,7 @@ public class Launcher {
         Display.destroy();
     }
     
-    public static void main(String[] args){
-        System.out.println("Start Game");
-        
+    public static void main(String[] args){        
         Launcher Mazerunner = new Launcher();
         Mazerunner.initDisplay();
         Mazerunner.initLWJGL();

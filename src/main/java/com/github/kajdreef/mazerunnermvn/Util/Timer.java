@@ -14,13 +14,13 @@ import org.lwjgl.Sys;
 public class Timer {
     public int fps = 0;
     private long lastFPS = 0;
-    public long lastFrame;
+    public long lastFrame = 0;
 
     /**
      * Record the starting time.
      */
     public void start() {
-        lastFPS = getTime();
+        lastFrame = getTime();
     }
     
     /**
@@ -44,16 +44,4 @@ public class Timer {
          
         return delta;
    }
-    /**
-     * Calculate the FPS and set it in the title bar
-     */
-    public void updateFPS() {
-        if (getTime() - lastFPS > 1000) {
-            System.out.println("FPS = " + fps);
-
-            fps = 0; //reset the FPS counter
-            lastFPS += 1000; //add one second
-        }
-        fps++;
-    }
 }

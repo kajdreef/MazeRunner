@@ -9,7 +9,9 @@ package com.github.kajdreef.mazerunnermvn.Input;
  *
  * @author kajdreef
  */
-public interface iInput {    
-    public void move();
-    public void look();
+public abstract class abstractInput implements iInput{
+    public static int dx = 0;
+    public static int dy = 0;
+    public static int xSpeed = 0;
+    public static int ySpeed = 0;
 }

@@ -6,10 +6,7 @@
 package com.github.kajdreef.mazerunnermvn.Object;
 
 import com.github.kajdreef.mazerunnermvn.Math.Vec3;
-import java.nio.FloatBuffer;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL15;
 
 /**
@@ -18,42 +15,42 @@ import org.lwjgl.opengl.GL15;
  */
 public class Cube extends GameObject{          
     
-    public Cube(int x, int y, int z){
+    public Cube(float x, float y, float z){
         position = new Vec3(x, y, z);
         init();
     }
     
     public void init(){
         vertexData = new float[] {
-				1.0f, 1.0f, -1.0f,
-				-1.0f, 1.0f, -1.0f,
-				-1.0f, 1.0f, 1.0f,
-				1.0f, 1.0f, 1.0f,
+				2*position.x + 1.0f, 2*position.y + 1.0f, 2*position.z + -1.0f,
+				2*position.x + -1.0f, 2*position.y + 1.0f, 2*position.z + -1.0f,
+				2*position.x + -1.0f, 2*position.y + 1.0f, 2*position.z + 1.0f,
+				2*position.x + 1.0f, 2*position.y + 1.0f, 2*position.z + 1.0f,
 				
-				1.0f, -1.0f, 1.0f,
-				-1.0f, -1.0f, 1.0f,
-				-1.0f, -1.0f, -1.0f,
-				1.0f, -1.0f, -1.0f,
+				2*position.x + 1.0f, 2*position.y + -1.0f, 2*position.z + 1.0f,
+				2*position.x + -1.0f, 2*position.y + -1.0f, 2*position.z + 1.0f,
+				2*position.x + -1.0f, 2*position.y + -1.0f, 2*position.z + -1.0f,
+				2*position.x + 1.0f, 2*position.y + -1.0f, 2*position.z + -1.0f,
 				
-				1.0f, 1.0f, 1.0f,
-				-1.0f, 1.0f, 1.0f,
-				-1.0f, -1.0f, 1.0f,
-				1.0f, -1.0f, 1.0f,
+				2*position.x + 1.0f, 2*position.y + 1.0f, 2*position.z + 1.0f,
+				2*position.x + -1.0f, 2*position.y + 1.0f, 2*position.z + 1.0f,
+				2*position.x + -1.0f, 2*position.y + -1.0f, 2*position.z + 1.0f,
+				2*position.x + 1.0f, 2*position.y + -1.0f, 2*position.z + 1.0f,
 				
-				1.0f, -1.0f, -1.0f,
-				-1.0f, -1.0f, -1.0f,
-				-1.0f, 1.0f, -1.0f,
-				1.0f, 1.0f, -1.0f,
+				2*position.x + 1.0f, 2*position.y + -1.0f, 2*position.z + -1.0f,
+				2*position.x + -1.0f, 2*position.y + -1.0f, 2*position.z + -1.0f,
+				2*position.x + -1.0f, 2*position.y + 1.0f, 2*position.z + -1.0f,
+				2*position.x + 1.0f, 2*position.y + 1.0f, 2*position.z + -1.0f,
 				
-				-1.0f, 1.0f, 1.0f,
-				-1.0f, 1.0f, -1.0f,
-				-1.0f, -1.0f, -1.0f,
-				-1.0f, -1.0f, 1.0f,
+				2*position.x + -1.0f, 2*position.y + 1.0f, 2*position.z + 1.0f,
+				2*position.x + -1.0f, 2*position.y + 1.0f, 2*position.z + -1.0f,
+				2*position.x + -1.0f, 2*position.y + -1.0f, 2*position.z + -1.0f,
+				2*position.x + -1.0f, 2*position.y + -1.0f, 2*position.z + 1.0f,
 				
-				1.0f, 1.0f, -1.0f,
-				1.0f, 1.0f, 1.0f,
-				1.0f, -1.0f, 1.0f,
-				1.0f, -1.0f, -1.0f
+				2*position.x + 1.0f, 2*position.y + 1.0f, 2*position.z + -1.0f,
+				2*position.x + 1.0f, 2*position.y + 1.0f, 2*position.z + 1.0f,
+				2*position.x + 1.0f, 2*position.y + -1.0f, 2*position.z + 1.0f,
+				2*position.x + 1.0f, 2*position.y + -1.0f, 2*position.z + -1.0f
         };
         
         colorData = new float[] {   1, 1, 0,

@@ -5,6 +5,8 @@
  */
 package com.github.kajdreef.mazerunnermvn.State;
 
+import com.github.kajdreef.mazerunnermvn.Input.*;
+import com.github.kajdreef.mazerunnermvn.MazeRunner.Camera;
 import com.github.kajdreef.mazerunnermvn.Object.Cube;
 import com.github.kajdreef.mazerunnermvn.Object.GameObject;
 import java.util.ArrayList;
@@ -15,25 +17,34 @@ import java.util.ArrayList;
  */
 public class MazeRunner extends State {
     ArrayList<GameObject> obj = null;
-
+    Camera camera = null;
+    abstractInput input = null;
+    
     public MazeRunner(){
         init();
     }
     
     @Override
     public void init() {
+        camera = new Camera(0.0f, 0.0f, -8.0f, 0.0f, 0.0f);
+        input = new KeyboardMouse();
+        
         obj = new ArrayList<>();
         obj.add(new Cube(0,0,0));
+        obj.add(new Cube(1,0,0));
+        obj.add(new Cube(2,0,0));
+        obj.add(new Cube(3,0,0));
     }
     
     @Override
     public void input() {
-
+        input.look();
+        input.move();
     }
 
     @Override
-    public void logic(int delta) {
-
+    public void logic(float delta) {
+        camera.update(delta);
     }
 
     @Override

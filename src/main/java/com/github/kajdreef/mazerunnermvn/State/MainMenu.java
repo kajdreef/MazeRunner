@@ -28,7 +28,7 @@ public class MainMenu extends State {
     }
     
     @Override
-    public void logic(int delta) {
+    public void logic(float delta) {
 
     }
 

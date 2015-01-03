@@ -30,7 +30,7 @@ public abstract class State{
      * 
      * @param delta 
      */
-    public abstract void logic(int delta);
+    public abstract void logic(float delta);
     
     /**
      * Render the graphics to the Display.
