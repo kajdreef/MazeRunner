@@ -6,6 +6,7 @@
 package com.github.kajdreef.mazerunnermvn.Object;
 
 import com.github.kajdreef.mazerunnermvn.Math.Vec3;
+import com.github.kajdreef.mazerunnermvn.MazeRunner.Camera;
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
@@ -19,17 +20,14 @@ public abstract class GameObject implements aabb{
     protected Vec3 position = null;
     
     protected int   VBOVertexHandle,
-                    VBOColorHandle,
-                    VBONormalHandle,
-                    VBOIndexHandle;
+                    VBOTextureHandle;
     
     protected FloatBuffer   cubeVertexBuffer,
-                            cubeColorBuffer,
-                            cubeNormalBuffer,
-                            cubeIndexBuffer;
+                            cubeTextureBuffer;
     
     protected float[]   vertexData,
-                        colorData;
+                        textureData;
+    
     /**
      * Update the position of the object with delta as the time that has passed
      * since last frame.
@@ -39,23 +37,22 @@ public abstract class GameObject implements aabb{
     public abstract void updatePosition(int delta);
     
     protected void createVBO(){
-        VBOColorHandle = GL15.glGenBuffers();
-        VBOVertexHandle = GL15.glGenBuffers();
-        
         cubeVertexBuffer = BufferUtils.createFloatBuffer(vertexData.length);
         cubeVertexBuffer.put(vertexData);
         cubeVertexBuffer.flip();
         
-        cubeColorBuffer = BufferUtils.createFloatBuffer(colorData.length);
-        cubeColorBuffer.put(colorData);
-        cubeColorBuffer.flip();
+        cubeTextureBuffer = BufferUtils.createFloatBuffer(textureData.length);
+        cubeTextureBuffer.put(textureData);
+        cubeTextureBuffer.flip();
         
+        VBOVertexHandle = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOVertexHandle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, cubeVertexBuffer, GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOColorHandle);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, cubeColorBuffer, GL15.GL_STATIC_DRAW);
+        VBOTextureHandle = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBOTextureHandle);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, cubeTextureBuffer, GL15.GL_STATIC_DRAW);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
     
@@ -64,4 +61,7 @@ public abstract class GameObject implements aabb{
      */
     public abstract void render();
     
+    public boolean collision(Camera player){        
+        return false;
+    }
 }

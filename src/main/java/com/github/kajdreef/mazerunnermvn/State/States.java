@@ -14,7 +14,7 @@ public enum States {
     MAINMENU{
         @Override
         public State construct(){
-            return new MainMenu();
+            return null;
         }
     },
     MAZERUNNER{

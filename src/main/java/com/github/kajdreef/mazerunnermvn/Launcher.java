@@ -68,16 +68,18 @@ public class Launcher {
      * Initialize LWJGL.
      */
     public void initLWJGL(){
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glShadeModel(GL11.GL_SMOOTH);
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         GL11.glClearDepth(1.0);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         
-        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-        GL11.glEnableClientState(GL11.GL_COLOR_ARRAY);
+        // Off aslong as the normal of the objects isn't fixed.
+        GL11.glEnable(GL11.GL_CULL_FACE);
         
+        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
+        GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         

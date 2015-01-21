@@ -12,8 +12,9 @@
         <lwjgl.version>2.9.2</lwjgl.version>
         <mockito.version>1.10.17</mockito.version>
         <junit.version>4.8.1</junit.version>
+        <slick.version>1.0.1</slick.version>
     </properties>
-
+    
     <build>
         <plugins>
             <plugin>
@@ -34,6 +35,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+                <groupId>org.slick2d</groupId>
+                <artifactId>slick2d-core</artifactId>
+                <version>${slick.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.lwjgl.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>

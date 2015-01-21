@@ -9,6 +9,7 @@ import com.github.kajdreef.mazerunnermvn.Input.abstractInput;
 import com.github.kajdreef.mazerunnermvn.Math.Vec3;
 import com.github.kajdreef.mazerunnermvn.Object.aabb;
 import com.github.kajdreef.mazerunnermvn.Input.Button;
+import com.github.kajdreef.mazerunnermvn.Object.GameObject;
 import org.lwjgl.opengl.GL11;
 
 /**

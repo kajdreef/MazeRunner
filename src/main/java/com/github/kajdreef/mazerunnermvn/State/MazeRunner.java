@@ -7,18 +7,19 @@ package com.github.kajdreef.mazerunnermvn.State;
 
 import com.github.kajdreef.mazerunnermvn.Input.*;
 import com.github.kajdreef.mazerunnermvn.MazeRunner.Camera;
-import com.github.kajdreef.mazerunnermvn.Object.Cube;
-import com.github.kajdreef.mazerunnermvn.Object.GameObject;
-import java.util.ArrayList;
+import com.github.kajdreef.mazerunnermvn.MazeRunner.Level;
+import com.github.kajdreef.mazerunnermvn.MazeRunner.Renderer;
+import com.github.kajdreef.mazerunnermvn.Util.Textures;
 
 /**
  *
  * @author kajdreef
  */
 public class MazeRunner extends State {
-    ArrayList<GameObject> obj = null;
-    Camera camera = null;
-    abstractInput input = null;
+    
+    private Camera player = null;
+    private abstractInput input = null;
+    private Level level = null;
     
     public MazeRunner(){
         init();
@@ -26,14 +27,13 @@ public class MazeRunner extends State {
     
     @Override
     public void init() {
-        camera = new Camera(0.0f, 0.0f, -8.0f, 0.0f, 0.0f);
+        Textures textures = new Textures();
+        Renderer render = new Renderer();
+        
+        player = new Camera(-9.0f, 0.0f, -9.0f, 0.0f, 90.0f);
         input = new KeyboardMouse();
         
-        obj = new ArrayList<>();
-        obj.add(new Cube(0,0,0));
-        obj.add(new Cube(1,0,0));
-        obj.add(new Cube(2,0,0));
-        obj.add(new Cube(3,0,0));
+        level = new Level();
     }
     
     @Override
@@ -44,13 +44,14 @@ public class MazeRunner extends State {
 
     @Override
     public void logic(float delta) {
-        camera.update(delta);
+        if(!level.collision(player)){
+            player.update(delta);
+        }
+        
     }
 
     @Override
     public void render() {
-        for(GameObject gameObj: obj){
-            gameObj.render();
-        }
+        level.render();
     }
 }
