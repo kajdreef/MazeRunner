@@ -7,8 +7,9 @@ package com.github.kajdreef.mazerunnermvn.MazeRunner;
 
 import com.github.kajdreef.mazerunnermvn.Object.Cube;
 import com.github.kajdreef.mazerunnermvn.Object.Floor;
-import com.github.kajdreef.mazerunnermvn.Object.Roof;
 import com.github.kajdreef.mazerunnermvn.Object.GameObject;
+import com.github.kajdreef.mazerunnermvn.Object.Roof;
+import com.github.kajdreef.mazerunnermvn.Util.Textures;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  * @author kajdreef
  */
 public class Level {
+    private Textures textures = null;
     final int WIDTH_LEVEL = 10; 
     final int HEIGHT_LEVEL = 10;
     boolean[][] level = {{true, true, true, true, true, true, true, true, true, true},
@@ -33,6 +35,7 @@ public class Level {
     ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
                     
     public Level(){
+        textures = new Textures();
         for(int i = 0; i < WIDTH_LEVEL; i++){
             for(int j = 0; j < HEIGHT_LEVEL; j++){
                 if(level[i][j]){
@@ -40,8 +43,14 @@ public class Level {
                 }
             }
         }
-        gameObjects.add(new Floor(2*WIDTH_LEVEL,-1.0f,2*HEIGHT_LEVEL));
-        gameObjects.add(new Roof(2*WIDTH_LEVEL,1,2*HEIGHT_LEVEL));
+        gameObjects.add(new Floor(10f,10f));
+        gameObjects.add(new Roof(10f,10f));
+    }
+    
+    public void update(){
+        for(GameObject temp: gameObjects){
+            temp.update();
+        }
     }
     
     public void render(){

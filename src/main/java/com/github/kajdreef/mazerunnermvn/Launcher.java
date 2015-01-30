@@ -8,10 +8,11 @@ package com.github.kajdreef.mazerunnermvn;
 import com.github.kajdreef.mazerunnermvn.State.*;
 import com.github.kajdreef.mazerunnermvn.Util.Timer;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
+import org.lwjgl.opengl.PixelFormat;
 
 /**
  * Launcher manages the states and game loop.
@@ -19,12 +20,9 @@ import org.lwjgl.util.glu.GLU;
  * @author kajdreef
  */
 public class Launcher {
-    // Display mode
-    private DisplayMode dm;
-    
     // Screen Height/Width
-    private final int HEIGHT = 800;
-    private final int WIDTH = 600;
+    public final static int HEIGHT = 720;
+    public final static int WIDTH = 1280;
     
     public States currentState = null;
     public static States nextState = States.MAZERUNNER;
@@ -41,59 +39,32 @@ public class Launcher {
     // Number of frames per second
     private final int fps = 60;
     
-    // Rotate the cube
-    private int RotateYaw = 0;
-
-    
     /**
      * Initialize the display.
      */
-    public void initDisplay(){
+    public void initDisplayLWJGL(){
+        PixelFormat pixelFormat = new PixelFormat();
+        ContextAttribs contextAtrributes = new ContextAttribs(3, 2)
+            .withForwardCompatible(true)
+            .withProfileCore(true);
+ 
         try {
-            Display.setFullscreen(false);
-            for (DisplayMode d : Display.getAvailableDisplayModes()) {
-                if (d.getWidth() == HEIGHT && d.getHeight() == WIDTH && d.getBitsPerPixel() == 32) {
-                    dm = d;
-                    break;
-                }
-            }
-            Display.setDisplayMode(dm);
-	    Display.create();
-	} catch (LWJGLException e) {
-            System.exit(0);
-	}
-    }
-    
-    /**
-     * Initialize LWJGL.
-     */
-    public void initLWJGL(){
-        GL11.glShadeModel(GL11.GL_SMOOTH);
-        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        GL11.glClearDepth(1.0);
+            Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
+            Display.setTitle("MazeRunner");
+            Display.create(pixelFormat, contextAtrributes);
+        } 
+        catch(LWJGLException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        
+        GL11.glClearColor(0.4f, 0.6f, 0.9f, 0f);
+        GL11.glViewport(0, 0, WIDTH, HEIGHT);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthFunc(GL11.GL_LEQUAL);
+        GL11.glDepthMask(true);
         
-        // Off aslong as the normal of the objects isn't fixed.
         GL11.glEnable(GL11.GL_CULL_FACE);
-        
-        GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-        GL11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
-
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        
-        GLU.gluPerspective( 
-                45.0f,
-                (float) dm.getWidth()/(float) dm.getHeight(),
-                0.1f,
-                300.0f
-        );
-        
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glLoadIdentity();
-
-        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
     }
     
     /**
@@ -123,9 +94,8 @@ public class Launcher {
         while(!Display.isCloseRequested()){
             checkState();
             
-            // Clear the screen and depth buffer
+            // Clear the screen
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-            GL11.glLoadIdentity();
             
             state.input();
             state.logic(timer0.getDelta());
@@ -145,8 +115,7 @@ public class Launcher {
     
     public static void main(String[] args){        
         Launcher Mazerunner = new Launcher();
-        Mazerunner.initDisplay();
-        Mazerunner.initLWJGL();
+        Mazerunner.initDisplayLWJGL();
         Mazerunner.gameLoop();
         Mazerunner.destroy();
     }

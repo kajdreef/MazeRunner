@@ -1,74 +1,54 @@
 package com.github.kajdreef.mazerunnermvn.Object;
 
-import com.github.kajdreef.mazerunnermvn.Math.Vec3;
+import com.github.kajdreef.mazerunnermvn.Object.Vertex.Vertex;
+import com.github.kajdreef.mazerunnermvn.Util.Logger;
 import com.github.kajdreef.mazerunnermvn.Util.Textures;
-import java.io.IOException;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.ResourceLoader;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.util.vector.Vector3f;
+
 
 /**
  *
  * @author kajdreef
  */
 public class Floor extends GameObject{          
+    private Logger log = Logger.getInstance();
     
-    Texture texture;
-    
-    public Floor(float x, float y, float z){
-        position = new Vec3(x, y, z);
+    public Floor(float scaleX, float scaleZ){
+        scale.x=scaleX;
+        scale.z=scaleZ;
+        
+        position.x = -0.5f/scale.x;
+        position.z = -0.5f/scale.z;
         init();
     }
     
     public void init(){
+       Vertex v0 = new Vertex(); 
+        v0.setXYZ(0f, -0.5f, 1.f); v0.setRGB(0, 1, 0); v0.setST(0, 0);
+        Vertex v1 = new Vertex(); 
+        v1.setXYZ(1.f, -0.5f, 1.f); v1.setRGB(0, 0, 1); v1.setST(1, 0);
+        Vertex v2 = new Vertex(); 
+        v2.setXYZ(1.f, -0.5f, 0f); v2.setRGB(0, 1, 0); v2.setST(1, 1);
+        Vertex v3 = new Vertex(); 
+        v3.setXYZ(0f, -0.5f, 0f); v3.setRGB(0, 0, 1); v3.setST(0, 1);
         
-        texture = Textures.getTexture("brick.png");
+        vertices = new Vertex[] {v0, v1, v2, v3};
         
-        vertexData = new float[] {
-            position.x,position.y, position.z,
-            position.x,position.y, 0,
-            0,position.y, 0,
-
-            0,position.y, 0,
-            0,position.y, position.z,
-            position.x,position.y, position.z
-        };
-        
-        textureData = new float[] {
-            0,0,
-            1,0,
-            1,1,
-            
-            1,1,
-            0,1,
-            0,0
+        indicesData = new byte[]{
+            // front
+            3,0,1,
+            1,2,3
         };
         
         createVBO();
+        
+        // Get texture from the HashMap and place it in the right texture unit
+        textureDiff = Textures.getTexture("brickwall.png");   
+        if(textureDiff == null){
+            log.logError("Error loading texture!");
+        }
+        setTextureUnit(textureDiff, GL13.GL_TEXTURE0);
+        createVBO();
     }
-    
-    @Override
-    public void updatePosition(int delta) {
-        
-    }
-    
-    @Override
-    public void render() {
-        GL11.glPushMatrix();
-        
-        texture.bind();
-
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOVertexHandle);
-        GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0L);
-        
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,VBOTextureHandle);
-        GL11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, 0L);
-        
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertexData.length/3);
-        
-        GL11.glPopMatrix();
-    }
-
 }

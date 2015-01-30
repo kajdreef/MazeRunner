@@ -5,11 +5,19 @@
  */
 package com.github.kajdreef.mazerunnermvn.State;
 
-import com.github.kajdreef.mazerunnermvn.Input.*;
+import com.github.kajdreef.mazerunnermvn.Input.KeyboardMouse;
+import com.github.kajdreef.mazerunnermvn.Input.abstractInput;
+import com.github.kajdreef.mazerunnermvn.Launcher;
 import com.github.kajdreef.mazerunnermvn.MazeRunner.Camera;
 import com.github.kajdreef.mazerunnermvn.MazeRunner.Level;
-import com.github.kajdreef.mazerunnermvn.MazeRunner.Renderer;
-import com.github.kajdreef.mazerunnermvn.Util.Textures;
+import com.github.kajdreef.mazerunnermvn.MazeRunner.ShaderProgram;
+import com.github.kajdreef.mazerunnermvn.Object.GameObject;
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix4f;
 
 /**
  *
@@ -17,9 +25,17 @@ import com.github.kajdreef.mazerunnermvn.Util.Textures;
  */
 public class MazeRunner extends State {
     
+    private ArrayList<GameObject> objList = null;
+    private ShaderProgram shaderProgram = null;
     private Camera player = null;
-    private abstractInput input = null;
     private Level level = null;
+    private abstractInput input = null;
+    
+    // Matrices
+    Matrix4f projectionMatrix = null;
+    Matrix4f viewMatrix = null;
+    Matrix4f modelMatrix = new Matrix4f();
+    private FloatBuffer matrix44Buffer = null;
     
     public MazeRunner(){
         init();
@@ -27,31 +43,69 @@ public class MazeRunner extends State {
     
     @Override
     public void init() {
-        Textures textures = new Textures();
-        Renderer render = new Renderer();
-        
-        player = new Camera(-9.0f, 0.0f, -9.0f, 0.0f, 90.0f);
+        player = new Camera(0f,0f,0f,0f,0f);
         input = new KeyboardMouse();
-        
         level = new Level();
+        
+        // create the shaders
+        shaderProgram = new ShaderProgram();
+        
+        // initialise projectionMatrix
+        projectionMatrix = new Matrix4f();
+        float fieldOfView = 60f;
+        float aspectRatio = (float)Launcher.WIDTH / (float)Launcher.HEIGHT;
+        float near_plane = 0.1f;
+        float far_plane = 100f;
+        float y_scale = 1/ (float)Math.tan((Math.toRadians(fieldOfView / 2f)));
+        float x_scale = y_scale / aspectRatio;
+        float frustum_length = far_plane - near_plane;
+        
+        projectionMatrix.m00 = x_scale;
+        projectionMatrix.m11 = y_scale;
+        projectionMatrix.m22 = -((far_plane + near_plane) / frustum_length);
+        projectionMatrix.m23 = -1;
+        projectionMatrix.m32 = -((2 * near_plane * far_plane) / frustum_length);
+        projectionMatrix.m33 = 0;
+        
+        // initialise modelMatrix;
+        modelMatrix = new Matrix4f();
+        modelMatrix.setIdentity();
+        
+        matrix44Buffer = BufferUtils.createFloatBuffer(16);
     }
     
     @Override
     public void input() {
-        input.look();
         input.move();
+        input.look();
     }
 
     @Override
     public void logic(float delta) {
-        if(!level.collision(player)){
-            player.update(delta);
-        }
+        // Update the player position/viewing direction
+        viewMatrix = player.update(delta);
         
+        // Update the model positions
+        level.update();
+        
+        GL20.glUseProgram(shaderProgram.getProgram());
+
+        projectionMatrix.store(matrix44Buffer); matrix44Buffer.flip();
+        GL20.glUniformMatrix4(shaderProgram.getPML(), false, matrix44Buffer);
+        viewMatrix.store(matrix44Buffer); matrix44Buffer.flip();
+        GL20.glUniformMatrix4(shaderProgram.getVML(), false, matrix44Buffer);
+
+        GL20.glUseProgram(0);
     }
 
     @Override
     public void render() {
+        shaderProgram.useProgram();
+        
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        
         level.render();
+        
+        shaderProgram.stopProgram();
     }
 }

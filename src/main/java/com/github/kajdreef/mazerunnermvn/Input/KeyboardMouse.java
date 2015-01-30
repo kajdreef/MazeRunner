@@ -13,8 +13,6 @@ import org.lwjgl.input.Mouse;
  * @author kajdreef
  */
 public class KeyboardMouse extends abstractInput {
-
-    private int KEYUP;
     
     public KeyboardMouse(){
         Mouse.setGrabbed(true);
