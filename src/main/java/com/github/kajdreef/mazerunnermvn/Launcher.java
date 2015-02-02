@@ -60,6 +60,8 @@ public class Launcher {
         
         GL11.glClearColor(0.4f, 0.6f, 0.9f, 0f);
         GL11.glViewport(0, 0, WIDTH, HEIGHT);
+        
+        // Enable depth test so the objects are rendered in the right way.
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         GL11.glDepthMask(true);
@@ -110,6 +112,7 @@ public class Launcher {
      * Destroy all remaining components.
      */
     public void destroy(){  
+        state.destroy();
         Display.destroy();
     }
     

@@ -5,10 +5,16 @@
  */
 package com.github.kajdreef.mazerunnermvn.Object;
 
+import org.lwjgl.util.vector.Vector3f;
+
 /**
  * TODO implement Axis-Aligned Bounding Box collision
  * @author kajdreef
  */
 public interface aabb {
-
+    float getX();
+    float getZ();
+    float getWidth();
+    float getHeight();
+    boolean detectCollision(aabb obj);
 }

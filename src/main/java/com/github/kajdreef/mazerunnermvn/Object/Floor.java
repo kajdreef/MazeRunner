@@ -18,20 +18,18 @@ public class Floor extends GameObject{
         scale.x=scaleX;
         scale.z=scaleZ;
         
-        position.x = -0.5f/scale.x;
-        position.z = -0.5f/scale.z;
         init();
     }
     
     public void init(){
        Vertex v0 = new Vertex(); 
-        v0.setXYZ(0f, -0.5f, 1.f); v0.setRGB(0, 1, 0); v0.setST(0, 0);
+        v0.setXYZ(0f, 0f, 1.f); v0.setRGB(0, 1, 0); v0.setST(0, 0);
         Vertex v1 = new Vertex(); 
-        v1.setXYZ(1.f, -0.5f, 1.f); v1.setRGB(0, 0, 1); v1.setST(1, 0);
+        v1.setXYZ(1.f, 0f, 1.f); v1.setRGB(0, 0, 1); v1.setST(1, 0);
         Vertex v2 = new Vertex(); 
-        v2.setXYZ(1.f, -0.5f, 0f); v2.setRGB(0, 1, 0); v2.setST(1, 1);
+        v2.setXYZ(1.f, 0f, 0f); v2.setRGB(0, 1, 0); v2.setST(1, 1);
         Vertex v3 = new Vertex(); 
-        v3.setXYZ(0f, -0.5f, 0f); v3.setRGB(0, 0, 1); v3.setST(0, 1);
+        v3.setXYZ(0f, 0f, 0f); v3.setRGB(0, 0, 1); v3.setST(0, 1);
         
         vertices = new Vertex[] {v0, v1, v2, v3};
         

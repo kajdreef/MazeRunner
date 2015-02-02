@@ -8,7 +8,6 @@ package com.github.kajdreef.mazerunnermvn.State;
 import com.github.kajdreef.mazerunnermvn.Input.KeyboardMouse;
 import com.github.kajdreef.mazerunnermvn.Input.abstractInput;
 import com.github.kajdreef.mazerunnermvn.Launcher;
-import com.github.kajdreef.mazerunnermvn.MazeRunner.Camera;
 import com.github.kajdreef.mazerunnermvn.MazeRunner.Level;
 import com.github.kajdreef.mazerunnermvn.MazeRunner.ShaderProgram;
 import com.github.kajdreef.mazerunnermvn.Object.GameObject;
@@ -27,7 +26,6 @@ public class MazeRunner extends State {
     
     private ArrayList<GameObject> objList = null;
     private ShaderProgram shaderProgram = null;
-    private Camera player = null;
     private Level level = null;
     private abstractInput input = null;
     
@@ -43,7 +41,6 @@ public class MazeRunner extends State {
     
     @Override
     public void init() {
-        player = new Camera(0f,0f,0f,0f,0f);
         input = new KeyboardMouse();
         level = new Level();
         
@@ -82,18 +79,14 @@ public class MazeRunner extends State {
 
     @Override
     public void logic(float delta) {
-        // Update the player position/viewing direction
-        viewMatrix = player.update(delta);
-        
         // Update the model positions
-        level.update();
+        level.update(delta);
+        
         
         GL20.glUseProgram(shaderProgram.getProgram());
 
         projectionMatrix.store(matrix44Buffer); matrix44Buffer.flip();
         GL20.glUniformMatrix4(shaderProgram.getPML(), false, matrix44Buffer);
-        viewMatrix.store(matrix44Buffer); matrix44Buffer.flip();
-        GL20.glUniformMatrix4(shaderProgram.getVML(), false, matrix44Buffer);
 
         GL20.glUseProgram(0);
     }
@@ -107,5 +100,10 @@ public class MazeRunner extends State {
         level.render();
         
         shaderProgram.stopProgram();
+    }
+    
+    @Override
+    public void destroy(){
+        
     }
 }

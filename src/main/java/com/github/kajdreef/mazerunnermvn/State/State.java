@@ -36,4 +36,6 @@ public abstract class State{
      * Render the graphics to the Display.
      */
     public abstract void render();
+    
+    public abstract void destroy();
 }

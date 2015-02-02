@@ -9,6 +9,7 @@ import com.github.kajdreef.mazerunnermvn.Object.Cube;
 import com.github.kajdreef.mazerunnermvn.Object.Floor;
 import com.github.kajdreef.mazerunnermvn.Object.GameObject;
 import com.github.kajdreef.mazerunnermvn.Object.Roof;
+import com.github.kajdreef.mazerunnermvn.Util.Logger;
 import com.github.kajdreef.mazerunnermvn.Util.Textures;
 import java.util.ArrayList;
 
@@ -17,9 +18,14 @@ import java.util.ArrayList;
  * @author kajdreef
  */
 public class Level {
+    private Logger log = Logger.getInstance();
     private Textures textures = null;
+    private Camera player = null;
+    private boolean collision = false;
+    
     final int WIDTH_LEVEL = 10; 
     final int HEIGHT_LEVEL = 10;
+    
     boolean[][] level = {{true, true, true, true, true, true, true, true, true, true},
                          {true, false, false, false, false, false, false, false, false, true},
                          {true, false, true, true, true, true, true, true, false, true},
@@ -34,7 +40,10 @@ public class Level {
     
     ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
                     
+    ArrayList<GameObject> noCollision = new ArrayList<GameObject>();
     public Level(){
+        player = new Camera(-1.5f,-0.5f,-1.5f,0f,135f);
+        
         textures = new Textures();
         for(int i = 0; i < WIDTH_LEVEL; i++){
             for(int j = 0; j < HEIGHT_LEVEL; j++){
@@ -43,13 +52,33 @@ public class Level {
                 }
             }
         }
-        gameObjects.add(new Floor(10f,10f));
-        gameObjects.add(new Roof(10f,10f));
+        
+        noCollision.add(new Floor(10f,10f));
+        noCollision.add(new Roof(10f,10f));
     }
     
-    public void update(){
+    
+    public void update(float delta){
+        player.newLocation();
+        int i =0;
         for(GameObject temp: gameObjects){
-            temp.update();
+            temp.update(delta);
+            i++;
+            collision = player.detectCollision(temp);
+            if(collision){
+                break;
+            }
+        }
+
+        for(GameObject temp: noCollision){
+            temp.update(delta);
+        }
+        
+        if(!collision){
+            player.update(delta);
+        }
+        else{
+            log.logDebug("----------------> Collision <----------------");
         }
     }
     
@@ -57,13 +86,8 @@ public class Level {
         for(GameObject temp: gameObjects){
             temp.render();
         }
-    }
-    
-    public boolean collision(Camera player){
-        for(GameObject obj: gameObjects){
-            if(obj.collision(player))
-                return true;
+        for(GameObject temp: noCollision){
+            temp.render();
         }
-        return false;
     }
 }

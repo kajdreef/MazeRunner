@@ -5,8 +5,6 @@
  */
 package com.github.kajdreef.mazerunnermvn.Object;
 
-import com.github.kajdreef.mazerunnermvn.Input.abstractInput;
-import com.github.kajdreef.mazerunnermvn.MazeRunner.Camera;
 import com.github.kajdreef.mazerunnermvn.MazeRunner.ShaderProgram;
 import com.github.kajdreef.mazerunnermvn.Object.Vertex.Vertex;
 import com.github.kajdreef.mazerunnermvn.Util.Texture;
@@ -34,7 +32,6 @@ public abstract class GameObject implements aabb{
     
     protected Texture textureDiff;
 
-    
     // VAO ID
     protected int vaoId;
     
@@ -90,7 +87,7 @@ public abstract class GameObject implements aabb{
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
     }
     
-    public void update(){
+    public void update(float delta){
         modelMatrix.setIdentity();
         
         // Scale, translate
@@ -129,10 +126,6 @@ public abstract class GameObject implements aabb{
         GL20.glDisableVertexAttribArray(1);
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);  
-    }
-    
-    public boolean collision(Camera player){        
-        return false;
     }
     
     public void destroy(){
@@ -174,5 +167,32 @@ public abstract class GameObject implements aabb{
                 GL11.GL_NEAREST);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, 
                 GL11.GL_LINEAR_MIPMAP_LINEAR);
+    }
+    
+    @Override
+    public float getX(){
+        return position.x;
+    }
+    
+    @Override
+    public float getZ(){
+        return position.z;
+    }
+    
+    @Override
+    public float getWidth(){
+        return scale.x;
+    }
+    
+    @Override
+    public float getHeight(){
+        return scale.z;
+    }
+    
+    @Override
+    public boolean detectCollision(aabb obj){
+        return obj.getWidth() > 0 && obj.getHeight() > 0 && scale.x > 0 && scale.z > 0 
+            && obj.getX() < position.x + scale.x && -obj.getX() + obj.getWidth()/4 > position.x
+            && obj.getZ() < position.z + scale.z && -obj.getZ() + obj.getWidth()/4 > position.z;
     }
 }

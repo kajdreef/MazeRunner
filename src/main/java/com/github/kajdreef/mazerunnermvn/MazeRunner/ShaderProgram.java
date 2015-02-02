@@ -20,7 +20,8 @@ public class ShaderProgram {
     Logger log = Logger.getInstance();
     private final String defaultShaderLocation = "res/shaders/";
     
-    private int vertexId, fragmentId, programId;
+    private int vertexId, fragmentId;
+    private static int programId;
     private static int projectionMatrixLocation, viewMatrixLocation, modelMatrixLocation;
     
     public ShaderProgram(){        
@@ -62,7 +63,7 @@ public class ShaderProgram {
         GL20.glUseProgram(0);
     }
     
-    public int getProgram(){
+    public static int getProgram(){
         return programId;
     }
     

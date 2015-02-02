@@ -25,22 +25,22 @@ public class Cube extends GameObject{
     
     public void init(){
         Vertex v0 = new Vertex(); 
-        v0.setXYZ(-0.5f, 0.5f, 0.5f); v0.setRGB(1, 0, 0);  v0.setST(0, 0);
+        v0.setXYZ(0f, 1f, 1f); v0.setRGB(1, 0, 0);  v0.setST(0, 0);
         Vertex v1 = new Vertex(); 
-        v1.setXYZ(-0.5f, -0.5f, 0.5f); v1.setRGB(0, 1, 0); v1.setST(0, 1);
+        v1.setXYZ(0f, 0f, 1f); v1.setRGB(0, 1, 0); v1.setST(0, 1);
         Vertex v2 = new Vertex(); 
-        v2.setXYZ(0.5f, -0.5f, 0.5f); v2.setRGB(0, 0, 1); v2.setST(1, 1);
+        v2.setXYZ(1f, 0f, 1f); v2.setRGB(0, 0, 1); v2.setST(1, 1);
         Vertex v3 = new Vertex(); 
-        v3.setXYZ(0.5f, 0.5f, 0.5f); v3.setRGB(1, 1, 1); v3.setST(1, 0);
+        v3.setXYZ(1f, 1f, 1f); v3.setRGB(1, 1, 1); v3.setST(1, 0);
         
         Vertex v4 = new Vertex(); 
-        v4.setXYZ(-0.5f, 0.5f, -0.5f); v4.setRGB(1, 0, 0);  v4.setST(1, 0);
+        v4.setXYZ(0f, 1f, 0f); v4.setRGB(1, 0, 0);  v4.setST(1, 0);
         Vertex v5 = new Vertex(); 
-        v5.setXYZ(-0.5f, -0.5f, -0.5f); v5.setRGB(0, 1, 0); v5.setST(1, 1);
+        v5.setXYZ(0f, 0f, 0f); v5.setRGB(0, 1, 0); v5.setST(1, 1);
         Vertex v6 = new Vertex(); 
-        v6.setXYZ(0.5f, -0.5f, -0.5f); v6.setRGB(0, 0, 1); v6.setST(0, 1);
+        v6.setXYZ(1f, 0f, 0f); v6.setRGB(0, 0, 1); v6.setST(0, 1);
         Vertex v7 = new Vertex(); 
-        v7.setXYZ(0.5f, 0.5f, -0.5f); v7.setRGB(1, 1, 1); v7.setST(0, 0);
+        v7.setXYZ(1f, 1f, 0f); v7.setRGB(1, 1, 1); v7.setST(0, 0);
         
         vertices = new Vertex[] {v0, v1, v2, v3, v4, v5, v6, v7};
         
