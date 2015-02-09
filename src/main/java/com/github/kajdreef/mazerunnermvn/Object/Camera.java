@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.kajdreef.mazerunnermvn.MazeRunner;
+package com.github.kajdreef.mazerunnermvn.Object;
 
 import com.github.kajdreef.mazerunnermvn.Input.abstractInput;
 import com.github.kajdreef.mazerunnermvn.Object.aabb;
 import com.github.kajdreef.mazerunnermvn.Input.Button;
+import com.github.kajdreef.mazerunnermvn.MazeRunner.ShaderProgram;
 import com.github.kajdreef.mazerunnermvn.Util.Logger;
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
@@ -21,10 +22,10 @@ import org.lwjgl.util.vector.Vector3f;
  * @author kajdreef
  */
 public class Camera implements aabb {
-    private Logger log= Logger.getInstance();
+    private Logger log = Logger.getInstance();
     private Vector3f position;
     private Vector3f newPosition;
-    private Vector3f scale = new Vector3f(1f,1f,1f);
+    private Vector3f scale = new Vector3f(.2f,.2f,.2f);
     private Matrix4f viewMatrix;
     
     private static float xRotation = 0, yRotation = 0;
@@ -79,10 +80,11 @@ public class Camera implements aabb {
         }        
     }
     
-    public void update(float delta){
+    public void update(float delta, boolean collision){
         viewMatrix.setIdentity();
         
-        position.set(newPosition);
+        if(!collision)
+            position.set(newPosition);
         
         Matrix4f.rotate((float)Math.toRadians(xRotation), new Vector3f(1,0,0), viewMatrix, viewMatrix);
         Matrix4f.rotate((float)Math.toRadians(yRotation), new Vector3f(0,1,0), viewMatrix, viewMatrix);
@@ -134,7 +136,7 @@ public class Camera implements aabb {
     @Override
     public boolean detectCollision(aabb obj){
        return obj.getWidth() > 0 && obj.getHeight() > 0 && scale.getX() > 0 && scale.getZ() > 0 &&
-       obj.getX() < -newPosition.getX() && obj.getX() + obj.getWidth() > -newPosition.getX()
-       && obj.getZ() < -newPosition.getZ() && obj.getZ() + obj.getWidth() > -newPosition.getZ();
+       obj.getX() < -newPosition.getX() + this.getWidth() && obj.getX() + obj.getWidth() > -newPosition.getX() - this.getWidth()
+       && obj.getZ() < -newPosition.getZ() + this.getHeight() && obj.getZ() + obj.getWidth() > -newPosition.getZ() - this.getHeight();
     }
 }

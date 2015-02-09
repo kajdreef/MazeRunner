@@ -5,6 +5,7 @@
  */
 package com.github.kajdreef.mazerunnermvn.MazeRunner;
 
+import com.github.kajdreef.mazerunnermvn.Object.Camera;
 import com.github.kajdreef.mazerunnermvn.Object.Cube;
 import com.github.kajdreef.mazerunnermvn.Object.Floor;
 import com.github.kajdreef.mazerunnermvn.Object.GameObject;
@@ -74,14 +75,9 @@ public class Level {
             temp.update(delta);
         }
         
-        if(!collision){
-            player.update(delta);
-        }
-        else{
-            log.logDebug("----------------> Collision <----------------");
-        }
+        player.update(delta, collision);
     }
-    
+        
     public void render(){
         for(GameObject temp: gameObjects){
             temp.render();
