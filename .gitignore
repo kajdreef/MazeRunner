@@ -1,2 +1,6 @@
 target
 *.log
+projectFiles/
+.DS_Store
+.idea/
+nbactions.xml
